@@ -4,3 +4,5 @@ obj
 *.suo
 *.v2
 *.vsidx
+*.bin
+.vs/
