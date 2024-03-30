@@ -25,7 +25,8 @@ namespace America
 
         public void OnDispose()
         {
-            log.Info(nameof(OnDispose));
+            // log.Info(nameof(OnDispose));
+            harmony.UnpatchAll();
         }
     }
 
