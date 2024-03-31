@@ -1,0 +1,1 @@
+dotnet publish /p:PublishProfile="%CD%\Properties\PublishProfiles\PublishNewVersion.pubxml"
