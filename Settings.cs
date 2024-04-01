@@ -50,10 +50,7 @@ namespace America
                 { settings.GetOptionDescLocaleID(nameof(DisableGovernmentSubsidies)), "Sets government subsidy to zero" },
                 // { settings.GetOptionGroupLocaleID("Settings"), "Settings" },
                 { settings.GetOptionLabelLocaleID(nameof(TerraformingCostMultiplier)), "Terraforming cost multiplier" },
-                { settings.GetOptionDescLocaleID(nameof(TerraformingCostMultiplier)), @"
-                Cost will be: multiplier * differenceInHeight.
-                
-                For instance if you level only the parts that was leveled will cost something."}
+                { settings.GetOptionDescLocaleID(nameof(TerraformingCostMultiplier)), @"Cost will be: multiplier * differenceInHeight, where differenceInHeight is the absolute difference between the new height and the old height of all the affected cells. This is roughly like cubic meter cost." },
             };
 
             return new LocaleDictionary(translations);

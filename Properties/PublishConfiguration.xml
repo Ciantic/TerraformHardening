@@ -46,7 +46,8 @@ Plan is to make game harder, it just so happens, that simulating America is the 
 	<!--Change
 	log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog>
-		Terraforming cost is now calculated using metric height difference.
+		Terraforming cost is now calculated using metric height difference, kind of like imaginary
+		cubic meters.
 	</ChangeLog>
 	<!--External
 	link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
