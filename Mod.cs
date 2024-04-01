@@ -27,6 +27,8 @@ namespace America
             settings = new Settings(this);
             settings.RegisterInOptionsUI();
 
+            log.Info("Hello America!");
+
             GameManager.instance.localizationManager.AddSource("en-US", Settings.GetLocales(settings));
             AssetDatabase.global.LoadSettings(nameof(America), settings, new Settings(this));
 
