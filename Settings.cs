@@ -32,12 +32,12 @@ namespace America
 
         }
 
-        [SettingsUISlider(min = 0, max = 10000, step = 1f, scaleDragVolume = true, scalarMultiplier = 1, unit = Unit.kFloatTwoFractions)]
-        public float TerraforminCostMultiplier
+        [SettingsUISlider(min = 0, max = 10, step = 0.1f, scaleDragVolume = true, scalarMultiplier = 1, unit = Unit.kFloatTwoFractions)]
+        public float TerraformingCostMultiplier
         {
             get;
             set;
-        } = 100f;
+        } = 3f;
 
         [SettingsUIConfirmation]
         public bool DisableGovernmentSubsidies { get; set; } = true;
@@ -49,13 +49,11 @@ namespace America
                 { settings.GetOptionLabelLocaleID(nameof(DisableGovernmentSubsidies)), "Disable Government Subsidies" },
                 { settings.GetOptionDescLocaleID(nameof(DisableGovernmentSubsidies)), "Sets government subsidy to zero" },
                 // { settings.GetOptionGroupLocaleID("Settings"), "Settings" },
-                { settings.GetOptionLabelLocaleID(nameof(TerraforminCostMultiplier)), "Terraforming cost multiplier" },
-                { settings.GetOptionDescLocaleID(nameof(TerraforminCostMultiplier)), @"
-                Cost will be: multiplier * brushSize * brushStrength.
+                { settings.GetOptionLabelLocaleID(nameof(TerraformingCostMultiplier)), "Terraforming cost multiplier" },
+                { settings.GetOptionDescLocaleID(nameof(TerraformingCostMultiplier)), @"
+                Cost will be: multiplier * differenceInHeight.
                 
-                For example if multiplier is 45, brush is sized 100 and brush strength of 50% then the cost will be 45 * 100 * 0.5 = 2250.
-                
-                Note: Currently all terraforming actions has a cost, even if they don't cause any effect for example leveling already leveled terrain."}
+                For instance if you level only the parts that was leveled will cost something."}
             };
 
             return new LocaleDictionary(translations);
