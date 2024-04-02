@@ -21,13 +21,15 @@ Terraforming has a price.
 You can control these from the settings menu.
 
 Plan is to make game harder, it just so happens, that simulating America is the easiest way to do it.
+
+There will be more features in the future, when I have time to implement.
 		]]>
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<!--Screenshot,
 	can be set multiple times-->
-	<Screenshot Value="" />
+	<Screenshot Value="Properties/500k-with-multiplier2-texts.jpg" />
 	<!--Tag,
 	can be set multiple times-->
 	<Tag Value="" />

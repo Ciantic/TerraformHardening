@@ -37,7 +37,7 @@ namespace America
         {
             get;
             set;
-        } = 3f;
+        } = 2f;
 
         [SettingsUIConfirmation]
         public bool DisableGovernmentSubsidies { get; set; } = true;
