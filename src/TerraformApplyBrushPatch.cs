@@ -16,9 +16,10 @@ namespace America
   class TerraformApplyBrushPatch
   {
 
-    public static NativeArray<short> Heights;
+    private static Texture2D HeightTextureBefore;
+    private static bool RanOutOfMoney = false;
 
-    private static NativeArray<short> GetHeights(TerrainSystem __instance, Bounds2 area)
+    private static Texture2D GetHeights(TerrainSystem __instance, Bounds2 area)
     {
       area.min -= __instance.playableOffset;
       area.max -= __instance.playableOffset;
@@ -41,7 +42,7 @@ namespace America
         lookTexture.ReadPixels(new Rect(areaImageX, areaImageY, areaImageWidth, areaImageHeight), 0, 0);
         lookTexture.Apply();
         RenderTexture.active = oldActive;
-        return lookTexture.GetPixelData<short>(0);
+        return lookTexture;
       }
       catch (Exception e)
       {
@@ -58,11 +59,11 @@ namespace America
       {
         return true;
       }
-      Heights = GetHeights(__instance, area);
 
+      // Check if player has no money, don't allow terraforming
       {
         var query = __instance.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Game.City.City>());
-        var entities = query.ToEntityArray(Allocator.TempJob);
+        var entities = query.ToEntityArray(Allocator.Temp);
         var lookup = __instance.CheckedStateRef.GetComponentLookup<PlayerMoney>();
         var playerMoney = lookup[entities[0]];
         var money = playerMoney.money;
@@ -70,30 +71,45 @@ namespace America
         if (money <= 0)
         {
           // Mod.log.Info("Not enough money to terraform");
+          RanOutOfMoney = true;
           return false;
         }
+        else
+        {
+          RanOutOfMoney = false;
+        }
       }
+
+      // Store heights before terraforming
+      HeightTextureBefore = GetHeights(__instance, area);
 
       return true;
     }
 
     public static void Postfix(TerrainSystem __instance, TerraformingType type, Bounds2 area, Brush brush, Texture texture)
     {
-      if (Mod.settings.TerraformingCostMultiplier == 0)
+      if (Mod.settings.TerraformingCostMultiplier == 0 || RanOutOfMoney)
       {
         return;
       }
 
-      var heightsAfterwards = GetHeights(__instance, area);
+      // Compare old heights with new heights and get difference in meters (diffInMeters)
+      var heightTextureAfter = GetHeights(__instance, area);
+      var heightsAfter = heightTextureAfter.GetPixelData<short>(0);
+      var heightsBefore = HeightTextureBefore.GetPixelData<short>(0);
       var diff = 0;
-      for (int i = 0; i < heightsAfterwards.Length; i++)
+      for (int i = 0; i < heightsAfter.Length; i++)
       {
-        diff += Math.Abs(heightsAfterwards[i] - Heights[i]);
+        diff += Math.Abs(heightsAfter[i] - heightsBefore[i]);
       }
+
       var scaler = short.MaxValue / __instance.heightScaleOffset.x;
       var diffInMeters = diff / scaler;
+
+      // Mod.log.Info($"TerraformApplyBrushPatch: {__instance.heightScaleOffset} heightmap changes");
       // Mod.log.Info($"TerraformApplyBrushPatch: {diffInMeters} heightmap changes");
 
+      // Reduce user money by cost of terraforming
       {
         /*
           Notes: 
@@ -102,7 +118,7 @@ namespace America
         */
 
         var query = __instance.EntityManager.CreateEntityQuery(ComponentType.ReadWrite<Game.City.City>());
-        var entities = query.ToEntityArray(Allocator.TempJob);
+        var entities = query.ToEntityArray(Allocator.Temp);
         var lookup = __instance.CheckedStateRef.GetComponentLookup<PlayerMoney>();
         var playerMoney = lookup[entities[0]];
         var cost = (int)(Mod.settings.TerraformingCostMultiplier * diffInMeters);
