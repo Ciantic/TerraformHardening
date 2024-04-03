@@ -48,6 +48,7 @@ namespace America
       {
         Mod.log.Error(e);
         RenderTexture.active = oldActive;
+        Texture2D.Destroy(lookTexture);
         throw e;
       }
     }
