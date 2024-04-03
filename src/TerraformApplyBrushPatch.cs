@@ -94,17 +94,23 @@ namespace America
       }
 
       // Compare old heights with new heights and get difference in meters (diffInMeters)
-      var heightTextureAfter = GetHeights(__instance, area);
-      var heightsAfter = heightTextureAfter.GetPixelData<short>(0);
-      var heightsBefore = HeightTextureBefore.GetPixelData<short>(0);
-      var diff = 0;
-      for (int i = 0; i < heightsAfter.Length; i++)
+      float diffInMeters;
       {
-        diff += Math.Abs(heightsAfter[i] - heightsBefore[i]);
-      }
+        var heightTextureAfter = GetHeights(__instance, area);
+        var heightsAfter = heightTextureAfter.GetPixelData<short>(0);
+        var heightsBefore = HeightTextureBefore.GetPixelData<short>(0);
+        var diff = 0;
+        for (int i = 0; i < heightsAfter.Length; i++)
+        {
+          diff += Math.Abs(heightsAfter[i] - heightsBefore[i]);
+        }
+        Texture2D.Destroy(heightTextureAfter);
+        Texture2D.Destroy(HeightTextureBefore);
+        HeightTextureBefore = null;
 
-      var scaler = short.MaxValue / __instance.heightScaleOffset.x;
-      var diffInMeters = diff / scaler;
+        var scaler = short.MaxValue / __instance.heightScaleOffset.x;
+        diffInMeters = diff / scaler;
+      }
 
       // Mod.log.Info($"TerraformApplyBrushPatch: {__instance.heightScaleOffset} heightmap changes");
       // Mod.log.Info($"TerraformApplyBrushPatch: {diffInMeters} heightmap changes");
