@@ -1,2 +1,1 @@
-dotnet build -c release
-dotnet publish /p:PublishProfile="%CD%\Properties\PublishProfiles\PublishNewVersion.pubxml"
+dotnet publish -c release /p:PublishProfile="%CD%\Properties\PublishProfiles\PublishNewVersion.pubxml"

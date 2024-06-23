@@ -1,6 +1,6 @@
 ﻿<Publish>
 	<ModId Value="76922" />
-	<DisplayName Value="TerraformHardening" />
+	<DisplayName Value="Terraform Hardening" />
 	<ShortDescription
 		Value="Makes terraforming cost something, you can control the cost from settings" />
 	<LongDescription>
@@ -12,14 +12,13 @@ You can control the price from the settings menu.
 	</LongDescription>
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<Screenshot Value="Properties/500k-with-multiplier2-texts.jpg" />
-	<Tag Value="terraforming" />
+	<Tag Value="" />
 	<ForumLink Value="" />
-	<ModVersion Value="0.1.7" />
+	<ModVersion Value="0.1.9" />
 	<GameVersion Value="1.*" />
 	<Dependency Id="" />
 	<ChangeLog>
-		Added a screenshot to give an idea how much terraforming costs, changed default multiplier
-		to 2.0.
+		Renamed to Terraform Hardening, as CO removed subsidies.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/Ciantic/TerraformHardening" />
 </Publish>
