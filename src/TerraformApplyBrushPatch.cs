@@ -10,7 +10,7 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
-namespace America
+namespace TerraformHardening
 {
   [HarmonyPatch(typeof(TerrainSystem), nameof(TerrainSystem.ApplyBrush))]
   class TerraformApplyBrushPatch

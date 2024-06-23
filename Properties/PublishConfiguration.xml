@@ -1,58 +1,25 @@
 ﻿<Publish>
-	<!--Id must be set in order to update existed mod. it is not required for
-	publishing mod for the first time-->
 	<ModId Value="76922" />
-	<!--Name
-	of the mod to display to players-->
-	<DisplayName Value="America" />
-	<!--Short
-	description of the mod-->
-	<ShortDescription Value="Land of the Free! No Government Subsidies!" />
-	<!--Long
-	description of the mod. Single line or multi line. Supports minimal markdown subset-->
-	<!--LongDescription
-	Value="This is a long description" /-->
+	<DisplayName Value="TerraformHardening" />
+	<ShortDescription
+		Value="Makes terraforming cost something, you can control the cost from settings" />
 	<LongDescription>
 		<![CDATA[
-Sets the government subsidy to zero. 
-
 Terraforming has a price.
 
-You can control these from the settings menu.
-
-Plan is to make game harder, it just so happens, that simulating America is the easiest way to do it.
-
-There will be more features in the future, when I have time to implement.
+You can control the price from the settings menu.
 		]]>
 	</LongDescription>
-	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
-	<!--Screenshot,
-	can be set multiple times-->
 	<Screenshot Value="Properties/500k-with-multiplier2-texts.jpg" />
-	<!--Tag,
-	can be set multiple times-->
-	<Tag Value="" />
-	<!--Link
-	to the forum post where the mod can be discussed-->
+	<Tag Value="terraforming" />
 	<ForumLink Value="" />
-	<!--Version
-	of the mod-->
-	<ModVersion Value="0.1.6" />
-	<!--Recommended
-	version of the base game to use the mod-->
+	<ModVersion Value="0.1.7" />
 	<GameVersion Value="1.*" />
-	<!--Dependency
-	for the mod, can be set multiple times-->
 	<Dependency Id="" />
-	<!--Change
-	log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog>
 		Added a screenshot to give an idea how much terraforming costs, changed default multiplier
 		to 2.0.
 	</ChangeLog>
-	<!--External
-	link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
-	<ExternalLink Type="youtube" Url="https://www.youtube.com/watch?v=XtkdH2fB1Iw" />
-	<ExternalLink Type="github" Url="https://github.com/Ciantic/America" />
+	<ExternalLink Type="github" Url="https://github.com/Ciantic/TerraformHardening" />
 </Publish>

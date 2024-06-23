@@ -11,28 +11,26 @@ using HarmonyLib;
 using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
-namespace America
+namespace TerraformHardening
 {
     public class Mod : IMod
     {
         public static Harmony harmony;
-        public static ILog log = LogManager.GetLogger($"{nameof(America)}.{nameof(Mod)}").SetShowsErrorsInUI(true);
+        public static ILog log = LogManager.GetLogger($"{nameof(TerraformHardening)}.{nameof(Mod)}").SetShowsErrorsInUI(true);
 
         public static Settings settings;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            // log.Info("Loading America");
+            // log.Info("Loading Terraform Hardening");
 
             settings = new Settings(this);
             settings.RegisterInOptionsUI();
 
-            log.Info("Hello America!");
-
             GameManager.instance.localizationManager.AddSource("en-US", Settings.GetLocales(settings));
-            AssetDatabase.global.LoadSettings(nameof(America), settings, new Settings(this));
+            AssetDatabase.global.LoadSettings(nameof(TerraformHardening), settings, new Settings(this));
 
-            harmony = new Harmony("america");
+            harmony = new Harmony("terraformhardening");
             try
             {
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -41,6 +39,8 @@ namespace America
             {
                 log.Error(e);
             }
+
+            // updateSystem.UpdateAt<MySearchSystem>(SystemUpdatePhase.MainLoop);
 
             // if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
             //     log.Info($"Current mod asset at {asset.path}");

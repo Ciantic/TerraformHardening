@@ -15,11 +15,11 @@ using HarmonyLib;
 using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
-namespace America
+namespace TerraformHardening
 {
 
 
-    [FileLocation(nameof(America))]
+    [FileLocation(nameof(TerraformHardening))]
     public class Settings : ModSetting
     {
 
@@ -39,15 +39,10 @@ namespace America
             set;
         } = 2f;
 
-        [SettingsUIConfirmation]
-        public bool DisableGovernmentSubsidies { get; set; } = true;
-
         public static IDictionarySource GetLocales(Settings settings)
         {
             var translations = new Dictionary<string, string> {
-                { settings.GetSettingsLocaleID(), "America" },
-                { settings.GetOptionLabelLocaleID(nameof(DisableGovernmentSubsidies)), "Disable Government Subsidies" },
-                { settings.GetOptionDescLocaleID(nameof(DisableGovernmentSubsidies)), "Sets government subsidy to zero" },
+                { settings.GetSettingsLocaleID(), "Terraform Hardening" },
                 // { settings.GetOptionGroupLocaleID("Settings"), "Settings" },
                 { settings.GetOptionLabelLocaleID(nameof(TerraformingCostMultiplier)), "Terraforming cost multiplier" },
                 { settings.GetOptionDescLocaleID(nameof(TerraformingCostMultiplier)), @"Cost will be: multiplier * differenceInHeight, where differenceInHeight is the absolute difference between the new height and the old height of all the affected cells. This is roughly like cubic meter cost." },

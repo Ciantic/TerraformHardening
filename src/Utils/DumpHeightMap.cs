@@ -4,7 +4,7 @@ using Game.Simulation;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
-namespace America
+namespace TerraformHardening
 {
     public class DumpHeightMap
     {
