@@ -1,1 +1,1 @@
-C:\Copies\cygwin\bin\tail.exe -f "%CSII_LOCALMODSPATH%\..\Logs\TerraformHardening.Mod.log"
+C:\cygwin64\bin\tail.exe -f "%CSII_LOCALMODSPATH%\..\Logs\TerraformHardening.Mod.log"

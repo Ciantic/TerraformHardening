@@ -14,11 +14,11 @@ You can control the price from the settings menu.
 	<Screenshot Value="Properties/500k-with-multiplier2-texts.jpg" />
 	<Tag Value="" />
 	<ForumLink Value="" />
-	<ModVersion Value="0.1.9" />
+	<ModVersion Value="0.2.1" />
 	<GameVersion Value="1.*" />
 	<Dependency Id="" />
 	<ChangeLog>
-		Renamed to Terraform Hardening, as CO removed subsidies.
+		Fixed to work with economy patch.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/Ciantic/TerraformHardening" />
 </Publish>

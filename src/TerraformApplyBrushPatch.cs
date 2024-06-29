@@ -7,6 +7,7 @@ using Game.Tools;
 using HarmonyLib;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
@@ -18,24 +19,38 @@ namespace TerraformHardening
 
     private static Texture2D HeightTextureBefore;
     private static bool RanOutOfMoney = false;
+    // private static DateTime LastDump = DateTime.MinValue;
 
     private static Texture2D GetHeights(TerrainSystem __instance, Bounds2 area)
     {
+
+      // Scale the area coordinates to 0 to 1
       area.min -= __instance.playableOffset;
       area.max -= __instance.playableOffset;
       area.min /= __instance.playableArea;
       area.max /= __instance.playableArea;
+      int4 area1 = new int4(
+          (int)math.max(math.floor(area.min.x * __instance.heightmap.width) - 1f, 0.0f),
+          (int)math.max(math.floor(area.min.y * __instance.heightmap.height) - 1f, 0.0f),
+          (int)math.min(math.ceil(area.max.x * __instance.heightmap.width) + 1f, __instance.heightmap.width - 1),
+          (int)math.min(math.ceil(area.max.y * __instance.heightmap.height) + 1f, __instance.heightmap.height - 1)
+      );
+      area1.zw -= area1.xy;
+      // area1.zw = math.clamp(area1.zw, new int2(
+      //     __instance.heightmap.width / this.m_TerrainMinMax.size,
+      //     __instance.heightmap.height / this.m_TerrainMinMax.size),
+      //     new int2(
+      //         __instance.heightmap.width,
+      //         __instance.heightmap.height)
+      //     );
+      var areaImageWidth = area1.z;
+      var areaImageHeight = area1.w;
+      var areaImageX = area1.x;
+      var areaImageY = area1.y;
 
-      var imageWidth = __instance.heightmap.width;
-      var imageHeight = __instance.heightmap.height;
-
-      // Scale the area coordinates to image coordinates
-      var areaImageWidth = (int)Math.Ceiling(area.Size().x * imageWidth);
-      var areaImageHeight = (int)Math.Ceiling(area.Size().y * imageHeight);
-      var areaImageX = (int)Math.Floor(area.x.min * imageWidth);
-      var areaImageY = imageHeight - (int)Math.Floor(area.y.min * imageHeight) - areaImageHeight - 1;
       var lookTexture = new Texture2D(areaImageWidth, areaImageHeight, __instance.heightmap.graphicsFormat, TextureCreationFlags.DontInitializePixels | TextureCreationFlags.DontUploadUponCreate);
       var oldActive = RenderTexture.active;
+
       RenderTexture.active = __instance.heightmap as RenderTexture;
       try
       {
@@ -71,7 +86,6 @@ namespace TerraformHardening
         entities.Dispose();
         if (money <= 0)
         {
-          // Mod.log.Info("Not enough money to terraform");
           RanOutOfMoney = true;
           return false;
         }
@@ -83,6 +97,11 @@ namespace TerraformHardening
 
       // Store heights before terraforming
       HeightTextureBefore = GetHeights(__instance, area);
+      // if (DateTime.Now - LastDump > TimeSpan.FromSeconds(3))
+      // {
+      //   LastDump = DateTime.Now;
+      //   DumpHeightMap.DumpToFile(__instance, area, "before");
+      // }
 
       return true;
     }
@@ -98,6 +117,7 @@ namespace TerraformHardening
       float diffInMeters;
       {
         var heightTextureAfter = GetHeights(__instance, area);
+        // DumpHeightMap.DumpToFile(__instance, area, "after");
         var heightsAfter = heightTextureAfter.GetPixelData<short>(0);
         var heightsBefore = HeightTextureBefore.GetPixelData<short>(0);
         var diff = 0;
@@ -112,9 +132,6 @@ namespace TerraformHardening
         var scaler = short.MaxValue / __instance.heightScaleOffset.x;
         diffInMeters = diff / scaler;
       }
-
-      // Mod.log.Info($"TerraformApplyBrushPatch: {__instance.heightScaleOffset} heightmap changes");
-      // Mod.log.Info($"TerraformApplyBrushPatch: {diffInMeters} heightmap changes");
 
       // Reduce user money by cost of terraforming
       {

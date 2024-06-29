@@ -1,6 +1,7 @@
 using System;
 using Colossal.Mathematics;
 using Game.Simulation;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
@@ -8,7 +9,7 @@ namespace TerraformHardening
 {
     public class DumpHeightMap
     {
-        public static void DumpToFile(TerrainSystem __instance, Bounds2 area)
+        public static void DumpToFile(TerrainSystem __instance, Bounds2 area, string prefix)
         {
             // Area originally is in world coordinates
 
@@ -17,15 +18,28 @@ namespace TerraformHardening
             area.max -= __instance.playableOffset;
             area.min /= __instance.playableArea;
             area.max /= __instance.playableArea;
+            int4 area1 = new int4(
+                (int)math.max(math.floor(area.min.x * __instance.heightmap.width) - 1f, 0.0f),
+                (int)math.max(math.floor(area.min.y * __instance.heightmap.height) - 1f, 0.0f),
+                (int)math.min(math.ceil(area.max.x * __instance.heightmap.width) + 1f, __instance.heightmap.width - 1),
+                (int)math.min(math.ceil(area.max.y * __instance.heightmap.height) + 1f, __instance.heightmap.height - 1)
+            );
+            area1.zw -= area1.xy;
+            // area1.zw = math.clamp(area1.zw, new int2(
+            //     __instance.heightmap.width / this.m_TerrainMinMax.size,
+            //     __instance.heightmap.height / this.m_TerrainMinMax.size),
+            //     new int2(
+            //         __instance.heightmap.width,
+            //         __instance.heightmap.height)
+            //     );
 
-            var imageWidth = __instance.heightmap.width;
-            var imageHeight = __instance.heightmap.height;
+            var areaImageWidth = area1.z;
+            var areaImageHeight = area1.w;
+            var areaImageX = area1.x;
+            var areaImageY = area1.y;
 
-            // Convert to image coordinates
-            var areaImageWidth = (int)Math.Ceiling(area.Size().x * imageWidth);
-            var areaImageHeight = (int)Math.Ceiling(area.Size().y * imageHeight);
-            var areaImageX = (int)Math.Floor(area.x.min * imageWidth);
-            var areaImageY = imageHeight - (int)Math.Floor(area.y.min * imageHeight) - areaImageHeight - 1;
+            Mod.log.Info($"DumpToFile: area size {areaImageWidth} x {areaImageHeight}");
+            Mod.log.Info($"DumpToFile: area coords x={areaImageX}, y={areaImageY}");
 
             /* To dump full playable height map 
             areaImageWidth = imageWidth;
@@ -56,7 +70,7 @@ namespace TerraformHardening
                     bitmap.SetPixel(x, lookTexture.height - y - 1, System.Drawing.Color.FromArgb((int)(color.r * 255), (int)(color.r * 255), (int)(color.r * 255)));
                 }
             }
-            bitmap.Save("C:\\Users\\jarip\\test4.png", System.Drawing.Imaging.ImageFormat.Png);
+            bitmap.Save($"C:\\Users\\jarip\\test4-{prefix}.png", System.Drawing.Imaging.ImageFormat.Png);
 
         }
     }
